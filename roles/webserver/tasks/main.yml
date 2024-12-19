@@ -1,0 +1,31 @@
+---
+# tasks file for webserver
+- name: Update package cache
+  apt:
+    update_cache: yes
+
+- name: Install NGINX webserver
+  apt:
+    name: nginx
+    state: present
+
+- name: Enable NGINX Webserver
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Get current http stats
+  community.general.nginx_status_info:
+    url: http://192.168.185.168/
+  register: result
+
+- name: Debug NGINX status result
+  debug:
+    var: result
+    
+- name: Deploy HTML J2 File 
+  template:
+    src: templates/index.html.j2
+    dest: /var/www/html/index.html
+    mode: '0644'
