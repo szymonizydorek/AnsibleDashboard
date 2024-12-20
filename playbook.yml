@@ -6,3 +6,4 @@
     - vault.yml
   roles:
     - webserver
+    - dns

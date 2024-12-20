@@ -1,0 +1,7 @@
+---
+- name: Add DNS entry to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "192.168.56.12 monitoring-dashboard"
+    state: present
+

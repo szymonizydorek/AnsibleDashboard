@@ -17,7 +17,7 @@
 
 - name: Get current http stats
   community.general.nginx_status_info:
-    url: http://192.168.185.168/
+    url: http://192.168.56.12/
   register: result
 
 - name: Debug NGINX status result
@@ -28,4 +28,10 @@
   template:
     src: templates/index.html.j2
     dest: /var/www/html/index.html
+    mode: '0644'
+
+- name: Copy CSS File 
+  copy:
+    src: files/style.css
+    dest: /var/www/html/style.css
     mode: '0644'
