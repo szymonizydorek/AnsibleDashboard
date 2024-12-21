@@ -1,8 +1,8 @@
 ---
 # tasks file for webserver
-- name: Update package cache
-  apt:
-    update_cache: yes
+#- name: Update package cache
+#  apt:
+#    update_cache: yes
 
 - name: Install NGINX webserver
   apt:
@@ -23,7 +23,30 @@
 - name: Debug NGINX status result
   debug:
     var: result
-    
+
+- name: Get Hostname Info
+  command: hostname
+  register: hostname_info
+  
+- name: Copy the shell script
+  copy:
+    src: get_system_info.sh
+    dest: /tmp/get_system_info.sh
+    mode: '0755'
+
+- name: Execute The Shell Script
+  command: /bin/bash /tmp/get_system_info.sh
+  register: script_output
+
+
+- name: Parse script output into variables
+  set_fact:
+    hostname: "{{ script_output.stdout_lines[0].split(': ')[1] }}"
+    cpu_load: "{{ script_output.stdout_lines[1].split(': ')[1] }}"
+    disk_usage: "{{ script_output.stdout_lines[2].split(': ')[1] }}"
+    ram_usage: "{{ script_output.stdout_lines[3].split(': ')[1] }}"
+
+
 - name: Deploy HTML J2 File 
   template:
     src: templates/index.html.j2
