@@ -1,0 +1,21 @@
+---
+# tasks file for nginx_basic_auth
+
+- name: Install Essential Security Packages
+  apt:
+    name:
+       - ufw
+       - fail2ban
+       - auditd
+       - sysstat
+       - netdata
+    state: present
+
+- name: Enable UFW Rules for SSH and HTTP
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+  loop:
+    - '22'
+    - '80'
+
