@@ -1,0 +1,9 @@
+---
+- name: Upadaing System Packages
+  apt: 
+    name: '*'
+    state: latest
+
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes

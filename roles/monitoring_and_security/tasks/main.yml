@@ -11,11 +11,30 @@
        - netdata
     state: present
 
-- name: Enable UFW Rules for SSH and HTTP
+- name: Enable UFW Rules for SSH, HTTPS and HTTP
   ufw:
     rule: allow
     port: "{{ item }}"
   loop:
     - '22'
     - '80'
+    - '443'
 
+
+- name: Set Permissions on NGINX Configuration files
+  file:
+    path: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Verify NGINX Installation
+  command: nginx -t
+  register: nginx_test
+  failed_when: nginx_test.rc != 0
+
+- name: Disable Root Login in SSH
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin'
+    line: 'PermitRootLogin no'

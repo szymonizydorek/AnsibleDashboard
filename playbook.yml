@@ -7,3 +7,5 @@
   roles:
     - webserver
     - monitoring_and_security
+    - ntp
+    - admin_tasks

@@ -15,10 +15,10 @@
     state: started
     enabled: yes
 
-- name: Get current http stats
-  community.general.nginx_status_info:
-    url: http://192.168.56.12/
-  register: result
+    #- name: Get current http stats
+    # community.general.nginx_status_info:
+    # url: http://192.168.56.12/
+    #register: result
 
 - name: Debug NGINX status result
   debug:
@@ -58,3 +58,36 @@
     src: files/style.css
     dest: /var/www/html/style.css
     mode: '0644'
+
+
+- name: Install Certbot
+  apt:
+    name: certbot
+    state: present
+
+- name: Install NGINX Certbot Plugin
+  apt:
+    name: python3-certbot-nginx
+    state: present
+ 
+- name: Creates Directory for SSL Certificate
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    mode: '0755'
+
+- name: Generate Self-Signed SSL Certificate
+  shell: >
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048
+    -keyout /etc/nginx/ssl/nginx.key
+    -out /etc/nginx/ssl/nginx.crt
+    -subj "/C=US/ST=State/L=City/O=Organization/CN=192.168.56.12"
+  args:
+    creates: /etc/nginx/ssl/nginx.key
+
+- name: Deploy NGINX Configuration with HTTPS
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+  notify: restart nginx
+

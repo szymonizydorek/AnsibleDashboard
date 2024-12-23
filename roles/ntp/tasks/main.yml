@@ -1,0 +1,11 @@
+---
+- name: Enusre NTP is running
+  apt:
+    name: ntp
+    state: present
+
+- name: Enable and Start NTP Service
+  service:
+    name: ntp
+    enabled: yes
+    state: started
