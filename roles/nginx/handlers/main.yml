@@ -1,0 +1,8 @@
+---
+- name: restart nginx_service
+  systemd:
+    name: "{{ nginx_service }}"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  listen: "restart nginx_service"

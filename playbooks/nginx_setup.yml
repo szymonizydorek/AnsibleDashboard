@@ -1,0 +1,9 @@
+---
+- name: Nginx Deployment
+  hosts: WebServer02
+  become: true
+  vars_files:
+    - /home/vagrant/Dashboard_project/vault.yml
+
+  roles:
+    - roles/nginx 

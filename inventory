@@ -7,3 +7,10 @@ all:
       ansible_become: true
     #  ansible_become_password: "{{ variable }}" 
       ansible_become_password: admin 
+    
+    WebServer02:
+      ansible_user: vagrant
+      ansible_host: 192.168.56.13
+      ansible_ssh_private_key_file: /home/vagrant/.ssh/id_rsa
+      ansible_become: true
+      ansible_become_password: "{{ webserver02_key }}" 

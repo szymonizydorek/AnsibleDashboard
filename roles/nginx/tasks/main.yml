@@ -1,0 +1,38 @@
+---
+- name: Install Docker.io
+  apt:
+    name: docker.io
+    state: present
+
+- name: Docker Installation Verificaiom
+  shell: docker --version
+  register: docker_version
+
+- name: Debug Docker Installation result
+  debug:
+    msg: "Yes, Docker is installed: {{ docker_version.stdout }}"
+
+- name: Ship Nginx Service File
+  template:
+    src: nginx-service.j2
+    dest: /etc/systemd/system/{{ nginx_service }}.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart nginx_service 
+
+- name: Enable Nginx Service
+  systemd:
+    name: "{{ nginx_service }}"
+    enabled: yes
+  notify: restart nginx_service
+
+
+- name: Ship Nginx Config File
+  template:
+    src: conf.j2
+    dest: /var/lib/nginx/conf.d/default.conf 
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart nginx_service 

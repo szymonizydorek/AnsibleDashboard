@@ -1,0 +1,11 @@
+---
+- name: Server Dashboard Deplopyment
+  hosts: all
+  become: true
+  vars_files:
+    - vault.yml
+  roles:
+    - webserver
+    - monitoring_and_security
+    - ntp
+    - admin_tasks
