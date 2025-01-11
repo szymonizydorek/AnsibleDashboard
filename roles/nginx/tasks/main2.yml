@@ -12,14 +12,11 @@
   debug:
     msg: "Yes, Docker is installed: {{ docker_version.stdout }}"
 
-- name: Template index.html into NGINX web directory
-  template:
-    src: index.html.j2  # The template file in the templates folder
-    dest: /usr/share/nginx/html/index.html  # Destination path inside the container
-    owner: root
-    group: root
-    mode: '0644'
-  notify: restart nginx_service
+- name: Add vagrant user to docker group
+  user:
+    name: vagrant
+    groups: docker
+    append: yes 
 
 - name: Ship Nginx Service File
   template:
@@ -28,7 +25,7 @@
     owner: root
     group: root
     mode: '0644'
-  notify: restart nginx_service
+  notify: restart nginx_service 
 
 - name: Enable Nginx Service
   systemd:
@@ -36,30 +33,27 @@
     enabled: yes
   notify: restart nginx_service
 
+- name: Shell Nginx Systemd status
+  shell: systemctl status nginx.service | grep Active | awk '{print $2}'
+  register: systemctl_status
+
+- name: Debug Nginx Systemd status
+  debug:
+    msg: "The nginx.status is {{ systemctl_status.stdout }}"
 
 - name: Ship Nginx Config File
   template:
     src: conf.j2
-    dest: /var/lib/nginx/conf.d/default.conf
+    dest: /var/lib/nginx/conf.d/default.conf 
     owner: root
     group: root
     mode: '0644'
-  notify: restart nginx_service
+  notify: restart nginx_service 
 
-- name: Shell Server code from NGINX
+- name: Shell Server code from NGINX 
   shell: curl -o /dev/null -s -w "%{http_code}\n" http://localhost
   register: server_code
 
 - name: Debug Server Code from NGINX
   debug:
     msg: "{{ server_code.stdout }}"
-
-- name: Shell Nginx config syntax check
-  command: docker exec -it nginx nginx -t 
-  register: syntax_check
-
-- name: Debug Ngxing config syntax check
-  debug:
-    msg: "{{ syntax_check.stdout }}"
-
-    
