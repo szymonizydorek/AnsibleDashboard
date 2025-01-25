@@ -1,0 +1,37 @@
+---
+- name: Install Network Manager
+  apt:
+    name: network-manager
+    state: present
+  become: yes
+
+- name: Ensure Network Manager is Running
+  service:
+    name: NetworkManager
+    state: started
+    enabled: yes
+
+- name: Change /etc/netplan to use nmcli 
+  lineinfile:
+     path: /etc/netplan/50-vagrant.yaml
+     regexp: '^renderer:'
+     line: 'renderer: NetworkManager'
+  notify: 
+     - Apply Netplan configuration
+
+- name: Verify NetworkManager is running
+  command: systemctl is-active NetworkManager
+  register: nm_status
+
+- name: Debug NetworkManager status
+  debug:
+    msg: "NetworkManager status: {{ nm_status.stdout }}"  
+
+- name: Verify Connections
+  command: nmcli connection show --active
+  register: nm_connection
+  become: yes
+
+- name: Debug Active Connections
+  debug:
+    msg: "{{ nm_connection.stdout }}"  
