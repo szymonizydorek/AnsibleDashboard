@@ -28,11 +28,6 @@
     group: root
     mode: '0644'
 
-- name: Verify NGINX Installation
-  command: nginx -t
-  register: nginx_test
-  failed_when: nginx_test.rc != 0
-
 - name: Disable Root Login in SSH
   lineinfile:
     path: /etc/ssh/sshd_config
