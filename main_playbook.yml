@@ -1,0 +1,21 @@
+---
+- name: Server Configuration and Deployment
+  hosts: all
+  become: yes
+  vars_files:
+    - vault.yml
+  tasks:
+    - name: Ensure Basic Connectivity
+      ping:
+
+    - name: Connectivity established... moving on to provisioning
+      debug:
+        msg: "Connectivity is established... moving on to the provisioning."
+
+  roles:
+    - 1_Admin_Start
+    - 2_DNS
+    - 3_NTP
+    - 4_WebServer
+    - 5_Security 
+
