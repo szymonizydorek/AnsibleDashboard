@@ -1,0 +1,30 @@
+---
+- name: Update apt packages cache
+  apt:
+    update_cache: yes
+
+- name: Install Docker.io package
+  apt:
+    name: docker.io
+    state: present
+ 
+- name: Ensure Docker Service is enabled
+  service:
+    name: docker
+    enabled: yes
+    state: started
+ 
+- name: Pull the latest official Jenkins image
+  docker_image:
+    name: "jenkins/jenkins"
+    tag: "latest"
+    source: pull
+
+- name: Create and start Jenkins Container
+  docker_container:
+    name: "{{ jenkins_container_name }}"
+    image: "{{ jenkins_image }}"
+    state: started
+    published_ports: "{{ jenkins_ports }}"
+    volumes:
+      - "var/jenkins_home:/var/jenkins_home"
