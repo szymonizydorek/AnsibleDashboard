@@ -18,4 +18,5 @@
     - 3_NTP
     - 4_WebServer
     - 5_Security 
+    - 7_Docker
 

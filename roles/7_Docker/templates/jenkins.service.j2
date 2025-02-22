@@ -1,0 +1,17 @@
+[Unit]
+Description=Jenkins Server
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Restart=Always
+ExecStartPre=-/usr/bin/docker rm {{ jenkins_container_name }}
+ExecStart=/usr/bin/docker run --name {{ jenkins_container_name }} \
+  -p 8080:8080 -p 50000:50000 \
+  -v /var/jenkins_home:/var/jenkins_home \
+  --restart=always \
+  jenkins/jenkins:latest
+
+
+[Install]
+WantedBy=multi-user.target
