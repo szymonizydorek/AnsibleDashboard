@@ -1,0 +1,55 @@
+---
+- name: Start Docker Service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Create Application Directory
+  file:
+    path: /opt/flask-docker-app
+    state: directory
+    mode: 0755
+
+- name: Create custom Docker network
+  docker_network:
+    name: custom-bridge-network
+    driver: bridge
+
+- name: Fix Docker Network
+  copy:
+    src: daemon.json
+    dest: /etc/docker
+    mode: 0755
+  notify: 
+    - Reload Docker
+
+- name: Copy Application Files
+  copy:
+    src: "{{ item }}"
+    dest: /opt/flask-docker-app
+  with_items:
+   - app.py
+   - requirements.txt
+   - flask_image.tar
+
+- name: Ship Template Files
+  template:
+    src: "{{ item }}"
+    dest: /opt/flask-docker-app/{{ item }}
+  with_items:
+    - Dockerfile.j2
+    
+- name: Load the Docker image on the target machine
+  command: docker load -i /opt/flask-docker-app/flask_image.tar
+    
+- name: Run the Flask app container on the target machine
+  docker_container:
+    name: flask_container
+    image: flask_image
+    state: started
+    restart_policy: always
+    ports:
+      - "5001:5001"  # Exposing the Flask app port
+    networks:
+      - custom-bridge-network 
