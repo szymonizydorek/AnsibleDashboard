@@ -4,5 +4,11 @@
   become: yes  # This enables privilege escalation
   vars_files:
     - vault.yml
-  roles:
-    - roles/7_Docker
+  tasks:
+    - name: Check if File Exists
+      simple_file_check:
+        path: "/tmp/test_file.txt"
+        create: yes
+      # roles:
+      # - roles/7_Docker
+
