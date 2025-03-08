@@ -33,23 +33,24 @@
    - requirements.txt
    - flask_image.tar
 
-- name: Ship Template Files
-  template:
-    src: "{{ item }}"
-    dest: /opt/flask-docker-app/{{ item }}
-  with_items:
-    - Dockerfile.j2
-    
 - name: Load the Docker image on the target machine
   command: docker load -i /opt/flask-docker-app/flask_image.tar
-    
-- name: Run the Flask app container on the target machine
-  docker_container:
-    name: flask_container
-    image: flask_image
-    state: started
-    restart_policy: always
-    ports:
-      - "5001:5001"  # Exposing the Flask app port
-    networks:
-      - custom-bridge-network 
+  
+- name: Verify Docker Images
+  command: docker images
+  register: image_info
+
+- name: Show Image Info
+  debug:
+    msg: "{{ image_info.stdout_lines }}"
+
+#d- name: Run the Flask app container on the target machine
+#  docker_container:
+#    name: flask_container
+#    image: flask_image
+#    state: started
+#    restart_policy: always
+#    ports:
+#      - "5001:5001"  # Exposing the Flask app port
+#    networks:
+#      - custom-bridge-network 

@@ -18,5 +18,6 @@
     - 3_NTP
     - 4_WebServer
     - 5_Security 
-    - 7_Docker
+    - 7_Jenkins_Container
+    - 8_Flask_Application
 

@@ -1,0 +1,63 @@
+---
+- name: Install Docker.io package
+  apt:
+    name: docker.io
+    state: present
+    
+
+- name: Ensure Docker Service is enabled
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Install Python and Pip
+  become: yes
+  package:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: Install Python Docker SDK
+  become: yes
+  pip:
+    name: docker
+    state: present
+
+- name: Create Folder 
+  file: 
+    path: /var/jenkins_home
+    owner: root
+    mode: 1775
+ 
+- name: Pull the latest official Jenkins image
+  docker_image:
+    name: "{{ jenkins_image }}"
+    tag: "latest"
+    source: pull
+
+- name: Run Jenkins Container with Network Host
+  docker_container:
+    name: jenkins
+    image: "jenkins/jenkins:latest"
+    state: started
+    restart_policy: always
+    network_mode: host
+    volumes:
+      - /var/jenkins_home:/var/jenkins_home
+
+- name: Check if Jenkins Serice is Online
+  shell: "curl -s -o /dev/null -w '%{http_code}' http://192.168.185.172:8080/"
+  register: url_status
+  ignore_errors: yes
+
+- name: Output URL Status
+  debug:
+    msg: "The system os online with code {{ url_status.stdout }}"
+  when: url_status.stdout == "200"
+
+- name: Notify When System is not Online
+  debug:
+    msg: "The system is not online. HTTP status code: {{ url_status.stdout }}"
+  when: url_status.stdout != "200"

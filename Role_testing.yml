@@ -5,4 +5,4 @@
   vars_files:
     - vault.yml
   roles:
-    - roles/8_Flask_Application
+    - roles/7_Docker
