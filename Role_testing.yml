@@ -12,3 +12,14 @@
       # roles:
       # - roles/7_Docker
 
+    - name: Gather Server Info
+      info_collection:
+        name: "name"
+        cpu_info: true
+      register: output
+
+    - name: Show Module Output
+      debug: 
+        var: output
+
+
