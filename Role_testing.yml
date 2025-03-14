@@ -4,22 +4,23 @@
   become: yes  # This enables privilege escalation
   vars_files:
     - vault.yml
-  tasks:
-    - name: Check if File Exists
-      simple_file_check:
-        path: "/tmp/test_file.txt"
-        create: yes
-      # roles:
-      # - roles/7_Docker
+  roles:
+    - 8_Flask_Application 
 
-    - name: Gather Server Info
-      info_collection:
-        name: "name"
-        cpu_info: true
-      register: output
+      #  tasks:
+      #  - name: Check if File Exists
+      # simple_file_check:
+      #  path: "/tmp/test_file.txt"
+      #  create: yes
 
-    - name: Show Module Output
-      debug: 
-        var: output
+      # - name: Gather Server Info
+      # info_collection:
+      #  name: "name"
+      #  cpu_info: true
+      #  register: output
+
+      #   - name: Show Module Output
+      # debug: 
+      #  var: output
 
 

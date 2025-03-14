@@ -5,52 +5,20 @@
     state: started
     enabled: yes
 
-- name: Create Application Directory
-  file:
-    path: /opt/flask-docker-app
-    state: directory
-    mode: 0755
-
-- name: Create custom Docker network
-  docker_network:
-    name: custom-bridge-network
-    driver: bridge
-
-- name: Fix Docker Network
+- name: Copy Docker image tarball to the remote server
   copy:
-    src: daemon.json
-    dest: /etc/docker
-    mode: 0755
-  notify: 
-    - Reload Docker
+    src: flask_image.tar
+    dest: /tmp/flask_image.tar
 
-- name: Copy Application Files
-  copy:
-    src: "{{ item }}"
-    dest: /opt/flask-docker-app
-  with_items:
-   - app.py
-   - requirements.txt
-   - flask_image.tar
 
-- name: Load the Docker image on the target machine
-  command: docker load -i /opt/flask-docker-app/flask_image.tar
-  
-- name: Verify Docker Images
-  command: docker images
-  register: image_info
+- name: Load the Docker image on the remote server
+  command: docker load -i /tmp/flask_image.tar
 
-- name: Show Image Info
-  debug:
-    msg: "{{ image_info.stdout_lines }}"
-
-#d- name: Run the Flask app container on the target machine
-#  docker_container:
-#    name: flask_container
-#    image: flask_image
-#    state: started
-#    restart_policy: always
-#    ports:
-#      - "5001:5001"  # Exposing the Flask app port
-#    networks:
-#      - custom-bridge-network 
+- name: Run the Flask app container
+  docker_container:
+    name: flask_app
+    image: flask_image
+    state: started
+    ports:
+      - "5001:5001"  # Map port 5001 inside the container to 5001 on the host
+    restart_policy: always
