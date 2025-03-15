@@ -3,9 +3,14 @@
   hosts: WebServer01
   become: yes  # This enables privilege escalation
   vars_files:
-    - vault.yml
+    - /home/vagrant/Dashboard_project/vault.yml  
+  tasks:
+    - name: Set Python interpreter
+      ansible.builtin.set_fact:
+        ansible_python_interpreter: /usr/bin/python3     
   roles:
-    - 4_WebServer 
+    - roles/4_WebServer 
+    - roles/10_MySQL_Setup 
 
       #  tasks:
       #  - name: Check if File Exists

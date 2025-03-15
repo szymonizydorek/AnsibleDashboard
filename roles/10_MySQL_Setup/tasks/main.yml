@@ -1,0 +1,22 @@
+---
+- name: Install required Python MySQL package
+  apt:
+    name: python3-pymysql
+    state: present
+
+- name: Create new databases with names 'User'
+  community.mysql.mysql_db:
+    name: Users
+    state: present
+    login_user: root
+    login_password: root
+  become: yes
+
+- name: Create database user with name 'simon' and password with all database privileges
+  mysql_user:
+    name: simon
+    password: "{{ simon_password }}"
+    priv: '*.*:ALL'
+    state: present
+    login_user: "{{ mysql_user }}"
+    login_password: "{{ mysql_password }}"

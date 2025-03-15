@@ -1,6 +1,6 @@
 ---
 - name: Nginx Deployment
-  hosts: WebServer02
+  hosts: WebServer01
   become: true
 
   roles:
