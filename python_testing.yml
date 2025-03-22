@@ -1,0 +1,18 @@
+---
+- name: Test Docker functionality
+  hosts: WebServer01
+  become: yes  # This enables privilege escalation
+  vars_files:
+    - /home/vagrant/Dashboard_project/vault.yml  
+  tasks:
+    - name: Set Python interpreter
+      ansible.builtin.set_fact:
+        ansible_python_interpreter: /usr/bin/python3     
+    
+    - name: Test Custom Module
+      facts_to_csv:
+      register: output
+
+    - name: Debug output 
+      debug:
+        var: output
