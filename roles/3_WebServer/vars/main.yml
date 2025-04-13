@@ -1,0 +1,6 @@
+---
+package_name: "nginx"
+service_name: "nginx"
+title: "Server Dashboard"
+heading: "Welcome to Server Dashboard"
+site_name: "DevOps Dashboard"

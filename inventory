@@ -1,0 +1,6 @@
+all:
+  hosts:
+    WebServers:
+      ansible_user: ansible_user
+      ansible_host: 172.31.90.87
+      ansible_ssh_private_key: /home/ubuntu/id_ecdsa
