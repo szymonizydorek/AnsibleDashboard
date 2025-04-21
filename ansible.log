@@ -3021,3 +3021,161 @@ The offending line appears to be:
 2025-04-21 08:55:18,692 p=11730 u=ubuntu n=ansible INFO| web1                       : ok=10   changed=0    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
 2025-04-21 08:55:18,692 p=11730 u=ubuntu n=ansible INFO| web2                       : ok=10   changed=0    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
 2025-04-21 08:55:18,692 p=11730 u=ubuntu n=ansible INFO| web3                       : ok=10   changed=0    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   
+2025-04-21 09:08:33,801 p=12247 u=ubuntu n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: All
+
+2025-04-21 09:08:33,802 p=12247 u=ubuntu n=ansible INFO| PLAY [Set motd on remote server] ****************************************************************************************************
+2025-04-21 09:08:33,802 p=12247 u=ubuntu n=ansible INFO| skipping: no hosts matched
+2025-04-21 09:08:33,802 p=12247 u=ubuntu n=ansible INFO| PLAY RECAP **************************************************************************************************************************
+2025-04-21 09:09:03,888 p=12307 u=ubuntu n=ansible INFO| PLAY [Set motd on remote server] ****************************************************************************************************
+2025-04-21 09:09:03,896 p=12307 u=ubuntu n=ansible INFO| TASK [Gathering Facts] **************************************************************************************************************
+2025-04-21 09:09:05,248 p=12307 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:09:05,671 p=12307 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:09:05,692 p=12307 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:09:05,699 p=12307 u=ubuntu n=ansible INFO| TASK [copy motd file to /etc/motd] **************************************************************************************************
+2025-04-21 09:09:06,640 p=12307 u=ubuntu n=ansible INFO| fatal: [web1]: FAILED! => {"changed": false, "checksum": "0c6c9f0987fb8784cd247746aacafba72b7da070", "msg": "Destination /etc not writable"}
+2025-04-21 09:09:06,642 p=12307 u=ubuntu n=ansible INFO| fatal: [web2]: FAILED! => {"changed": false, "checksum": "0c6c9f0987fb8784cd247746aacafba72b7da070", "msg": "Destination /etc not writable"}
+2025-04-21 09:09:06,652 p=12307 u=ubuntu n=ansible INFO| fatal: [web3]: FAILED! => {"changed": false, "checksum": "0c6c9f0987fb8784cd247746aacafba72b7da070", "msg": "Destination /etc not writable"}
+2025-04-21 09:09:06,653 p=12307 u=ubuntu n=ansible INFO| PLAY RECAP **************************************************************************************************************************
+2025-04-21 09:09:06,653 p=12307 u=ubuntu n=ansible INFO| web1                       : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-04-21 09:09:06,653 p=12307 u=ubuntu n=ansible INFO| web2                       : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-04-21 09:09:06,653 p=12307 u=ubuntu n=ansible INFO| web3                       : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-04-21 09:09:55,434 p=12398 u=ubuntu n=ansible INFO| PLAY [Set motd on remote server] ****************************************************************************************************
+2025-04-21 09:09:55,441 p=12398 u=ubuntu n=ansible INFO| TASK [Gathering Facts] **************************************************************************************************************
+2025-04-21 09:09:56,711 p=12398 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:09:56,725 p=12398 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:09:56,783 p=12398 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:09:56,790 p=12398 u=ubuntu n=ansible INFO| TASK [copy motd file to /etc/motd] **************************************************************************************************
+2025-04-21 09:09:57,757 p=12398 u=ubuntu n=ansible INFO| changed: [web2]
+2025-04-21 09:09:57,764 p=12398 u=ubuntu n=ansible INFO| changed: [web1]
+2025-04-21 09:09:58,029 p=12398 u=ubuntu n=ansible INFO| changed: [web3]
+2025-04-21 09:09:58,031 p=12398 u=ubuntu n=ansible INFO| PLAY RECAP **************************************************************************************************************************
+2025-04-21 09:09:58,031 p=12398 u=ubuntu n=ansible INFO| web1                       : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-04-21 09:09:58,031 p=12398 u=ubuntu n=ansible INFO| web2                       : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-04-21 09:09:58,032 p=12398 u=ubuntu n=ansible INFO| web3                       : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-04-21 09:30:34,185 p=12525 u=ubuntu n=ansible INFO| web3 | SUCCESS => {"changed": false,"ping": "pong"}
+2025-04-21 09:30:34,528 p=12525 u=ubuntu n=ansible INFO| web2 | SUCCESS => {"changed": false,"ping": "pong"}
+2025-04-21 09:30:34,546 p=12525 u=ubuntu n=ansible INFO| web1 | SUCCESS => {"changed": false,"ping": "pong"}
+2025-04-21 09:48:55,232 p=12652 u=ubuntu n=ansible INFO| PLAY [Set motd on remote server] ******************************************************************
+2025-04-21 09:48:55,239 p=12652 u=ubuntu n=ansible INFO| TASK [Gathering Facts] ****************************************************************************
+2025-04-21 09:48:56,789 p=12652 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:48:57,095 p=12652 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:48:57,098 p=12652 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:48:57,104 p=12652 u=ubuntu n=ansible INFO| TASK [copy motd file to /etc/motd] ****************************************************************
+2025-04-21 09:48:58,041 p=12652 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:48:58,047 p=12652 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:48:58,275 p=12652 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:48:58,278 p=12652 u=ubuntu n=ansible INFO| PLAY RECAP ****************************************************************************************
+2025-04-21 09:48:58,278 p=12652 u=ubuntu n=ansible INFO| web1                       : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-04-21 09:48:58,278 p=12652 u=ubuntu n=ansible INFO| web2                       : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-04-21 09:48:58,278 p=12652 u=ubuntu n=ansible INFO| web3                       : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-04-21 09:50:25,769 p=12790 u=ubuntu n=ansible ERROR| ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
+
+Syntax Error while loading YAML.
+  mapping values are not allowed in this context. mapping values are not allowed in this context
+  in "<unicode string>", line 3, column 8
+
+The error appears to be in '/home/ubuntu/AnsibleProject/playbook_1.yml': line 3, column 8, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+) Create M- name: Provision Severs for Developers
+  hosts: all
+       ^ here
+
+2025-04-21 09:50:58,793 p=12814 u=ubuntu n=ansible INFO| PLAY [Provision Severs for Developers] ************************************************************
+2025-04-21 09:50:58,800 p=12814 u=ubuntu n=ansible INFO| TASK [Gathering Facts] ****************************************************************************
+2025-04-21 09:51:00,367 p=12814 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:51:00,632 p=12814 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:51:00,645 p=12814 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:51:00,650 p=12814 u=ubuntu n=ansible INFO| TASK [(1)  Create Managers, Admin and User Group] *************************************************
+2025-04-21 09:51:01,184 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=managers)
+2025-04-21 09:51:01,193 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=managers)
+2025-04-21 09:51:01,374 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=managers)
+2025-04-21 09:51:01,560 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=admins)
+2025-04-21 09:51:01,565 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=admins)
+2025-04-21 09:51:01,927 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=admins)
+2025-04-21 09:51:01,945 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=devs)
+2025-04-21 09:51:01,957 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=devs)
+2025-04-21 09:51:02,507 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=devs)
+2025-04-21 09:51:02,516 p=12814 u=ubuntu n=ansible INFO| TASK [(1) Create Managers Users] ******************************************************************
+2025-04-21 09:51:03,196 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=manager1)
+2025-04-21 09:51:03,203 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=manager1)
+2025-04-21 09:51:03,357 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=manager1)
+2025-04-21 09:51:03,634 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=manager2)
+2025-04-21 09:51:03,640 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=manager2)
+2025-04-21 09:51:03,952 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=manager2)
+2025-04-21 09:51:03,959 p=12814 u=ubuntu n=ansible INFO| TASK [(1) Create Admins Users] ********************************************************************
+2025-04-21 09:51:04,443 p=12814 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:51:04,459 p=12814 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:51:04,658 p=12814 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:51:04,666 p=12814 u=ubuntu n=ansible INFO| TASK [(1) Create User User] ***********************************************************************
+2025-04-21 09:51:05,132 p=12814 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:51:05,158 p=12814 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:51:05,354 p=12814 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:51:05,362 p=12814 u=ubuntu n=ansible INFO| TASK [(2) Install Required Software] **************************************************************
+2025-04-21 09:51:06,510 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=vim)
+2025-04-21 09:51:06,535 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=vim)
+2025-04-21 09:51:07,437 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=nano)
+2025-04-21 09:51:07,479 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=nano)
+2025-04-21 09:51:07,494 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=vim)
+2025-04-21 09:51:08,384 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=git)
+2025-04-21 09:51:08,418 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=git)
+2025-04-21 09:51:09,056 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=nano)
+2025-04-21 09:51:09,310 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=curl)
+2025-04-21 09:51:09,376 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=curl)
+2025-04-21 09:51:10,251 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=tree)
+2025-04-21 09:51:10,341 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=tree)
+2025-04-21 09:51:10,601 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=git)
+2025-04-21 09:51:11,168 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=vim)
+2025-04-21 09:51:11,257 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=vim)
+2025-04-21 09:51:12,072 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=tmux)
+2025-04-21 09:51:12,136 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=curl)
+2025-04-21 09:51:12,188 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=tmux)
+2025-04-21 09:51:13,012 p=12814 u=ubuntu n=ansible INFO| ok: [web1] => (item=unzip)
+2025-04-21 09:51:13,140 p=12814 u=ubuntu n=ansible INFO| ok: [web2] => (item=unzip)
+2025-04-21 09:51:13,707 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=tree)
+2025-04-21 09:51:15,259 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=vim)
+2025-04-21 09:51:16,806 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=tmux)
+2025-04-21 09:51:18,337 p=12814 u=ubuntu n=ansible INFO| ok: [web3] => (item=unzip)
+2025-04-21 09:51:18,348 p=12814 u=ubuntu n=ansible INFO| TASK [(3) Set MOTD using shell command] ***********************************************************
+2025-04-21 09:51:18,876 p=12814 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:51:18,880 p=12814 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:51:19,055 p=12814 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:51:19,063 p=12814 u=ubuntu n=ansible INFO| TASK [(4) Set Hostname to "devops1" for Ubuntu] ***************************************************
+2025-04-21 09:51:19,135 p=12814 u=ubuntu n=ansible INFO| skipping: [web3]
+2025-04-21 09:51:19,980 p=12814 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:51:19,982 p=12814 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:51:19,990 p=12814 u=ubuntu n=ansible INFO| TASK [(4) Set Hostname to "devops2" for RedHat] ***************************************************
+2025-04-21 09:51:20,017 p=12814 u=ubuntu n=ansible INFO| skipping: [web1]
+2025-04-21 09:51:20,036 p=12814 u=ubuntu n=ansible INFO| skipping: [web2]
+2025-04-21 09:51:20,820 p=12814 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:51:20,828 p=12814 u=ubuntu n=ansible INFO| TASK [(5) Set timezone to UTC] ********************************************************************
+2025-04-21 09:51:21,451 p=12814 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:51:21,453 p=12814 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:51:21,629 p=12814 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:51:21,635 p=12814 u=ubuntu n=ansible INFO| TASK [(6) Install MariaDB on Debian/Ubuntu] *******************************************************
+2025-04-21 09:51:21,712 p=12814 u=ubuntu n=ansible INFO| skipping: [web3]
+2025-04-21 09:51:25,564 p=12814 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:51:25,772 p=12814 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:51:25,779 p=12814 u=ubuntu n=ansible INFO| TASK [(6) Install MariaDB on RedHat] **************************************************************
+2025-04-21 09:51:25,807 p=12814 u=ubuntu n=ansible INFO| skipping: [web1]
+2025-04-21 09:51:25,826 p=12814 u=ubuntu n=ansible INFO| skipping: [web2]
+2025-04-21 09:51:28,258 p=12814 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:51:28,265 p=12814 u=ubuntu n=ansible INFO| TASK [Try to create database as root/nopassword first. If not allowed, pass the credentials] ******
+2025-04-21 09:51:28,345 p=12814 u=ubuntu n=ansible INFO| skipping: [web3]
+2025-04-21 09:51:28,967 p=12814 u=ubuntu n=ansible INFO| fatal: [web1]: FAILED! => {"changed": false, "msg": "unable to find /root/.my.cnf. Exception message: (1698, \"Access denied for user 'bob'@'localhost'\")"}
+2025-04-21 09:51:29,025 p=12814 u=ubuntu n=ansible INFO| fatal: [web2]: FAILED! => {"changed": false, "msg": "unable to find /root/.my.cnf. Exception message: (1698, \"Access denied for user 'bob'@'localhost'\")"}
+2025-04-21 09:51:29,027 p=12814 u=ubuntu n=ansible INFO| PLAY RECAP ****************************************************************************************
+2025-04-21 09:51:29,027 p=12814 u=ubuntu n=ansible INFO| web1                       : ok=10   changed=0    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2025-04-21 09:51:29,027 p=12814 u=ubuntu n=ansible INFO| web2                       : ok=10   changed=0    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2025-04-21 09:51:29,027 p=12814 u=ubuntu n=ansible INFO| web3                       : ok=10   changed=0    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   
+2025-04-21 09:51:47,393 p=13301 u=ubuntu n=ansible INFO| PLAY [Provision Severs for Developers] ************************************************************
+2025-04-21 09:51:47,400 p=13301 u=ubuntu n=ansible INFO| TASK [Gathering Facts] ****************************************************************************
+2025-04-21 09:51:48,681 p=13301 u=ubuntu n=ansible INFO| ok: [web3]
+2025-04-21 09:51:48,779 p=13301 u=ubuntu n=ansible INFO| ok: [web2]
+2025-04-21 09:51:48,787 p=13301 u=ubuntu n=ansible INFO| ok: [web1]
+2025-04-21 09:51:48,792 p=13301 u=ubuntu n=ansible INFO| TASK [(1)  Create Managers, Admin and User Group] *************************************************
+2025-04-21 09:51:48,841 p=13301 u=ubuntu n=ansible ERROR|  [ERROR]: User interrupted execution
+
