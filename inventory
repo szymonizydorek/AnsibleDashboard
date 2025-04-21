@@ -7,13 +7,11 @@ all:
           ansible_user: ansible_user
           ansible_ssh_private_key_file: /home/ubuntu/.ssh/id_ecdsa
           ansible_python_interpreter: /usr/bin/python3
-          ansible_become_password: "admin"
         web2:
           ansible_host: 172.31.90.174
           ansible_user: ansible_user
           ansible_ssh_private_key_file: /home/ubuntu/.ssh/id_ecdsa
           ansible_python_interpreter: /usr/bin/python3
-          ansible_become_password: "admin"
         web3:
           ansible_host: 172.31.28.171
           ansible_user: ansible_user
