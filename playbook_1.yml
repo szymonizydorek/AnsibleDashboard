@@ -1,0 +1,92 @@
+---
+- name: Provision Severs for Developers
+  hosts: all
+  become: yes
+  vars_files:
+    - vars/users.yml
+
+  tasks:
+    - name: (1)  Create Managers, Admin and User Group 
+      group:
+        name: "{{ item }}" 
+      loop:
+        - managers
+        - admins
+        - devs
+     
+    - name: (1) Create Managers Users
+      user:
+        name: "{{ item }}"
+        group: managers
+        groups: "{{ 'wheel' if ansible_os_family == 'RedHat' else 'sudo' }}"
+        append: yes
+      loop:
+        - manager1
+        - manager2
+    
+    - name: (1) Create Admins Users
+      user:
+        name: admin
+        group: admins
+        groups: "{{ 'wheel' if ansible_os_family == 'RedHat' else 'sudo' }}"
+        append: yes
+
+    - name: (1) Create User User
+      user:
+        name: user
+        group: devs
+
+    - name: (2) Install Required Software
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - vim
+        - nano
+        - git
+        - curl
+        - tree
+        - tmux
+        - unzip
+          
+    - name: (3) Set MOTD using shell command
+      shell: echo 'Welcome to the DevOps workstation.' > /etc/motd
+      args:
+        creates: /etc/motd
+
+    - name: (4) Set Hostname to "devops1" for Ubuntu
+      hostname:
+        name: devops1
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: (4) Set Hostname to "devops2" for RedHat
+      hostname:
+        name: devops2
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: (5) Set timezone to UTC
+      timezone:
+        name: UTC
+
+    - name: (6) Install MariaDB on Debian/Ubuntu
+      apt:
+        name: mariadb-server
+        state: present
+        update_cache: yes
+      when: ansible_facts['os_family'] == 'Debian' 
+    
+    - name: (6) Install MariaDB on RedHat
+      yum:
+        name: mariadb-server
+        state: present
+        update_cache: yes
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: Try to create database as root/nopassword first. If not allowed, pass the credentials
+      mysql_db:
+        check_implicit_admin: true
+        login_user: bob
+        login_password: 123456
+        name: bobdata
+        state: present
+      when: ansible_facts['os_family'] == 'Debian' 
