@@ -3,7 +3,8 @@
   hosts: all
   become: yes
     # vars_files:
-    #    -come: yes vars/users.yml
+  vars_files:
+    - secrets.yml #    -come: yes vars/users.yml
 
   tasks:
     - name: (1)  Create Managers, Admin and User Group 
@@ -93,11 +94,11 @@
     - name: Create (or update) MariaDB user bobuser on Debian
       mysql_user:
         name: bobuser
-        password: admin123
+        password: "{{ db_pass }}"
         priv: '*.*:ALL'
         state: present
         login_user: root
-        login_password: YourNewRootPass 
+        login_password: "{{ db_root_pass }}" 
         login_unix_socket: /run/mysqld/mysqld.sock
       when: ansible_facts['os_family'] == 'Debian'
 
