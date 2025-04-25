@@ -83,11 +83,21 @@
         update_cache: yes
       when: ansible_facts['os_family'] == 'RedHat'
 
-    - name: Try to create database as root/nopassword first. If not allowed, pass the credentials
+    - name: (6) Create a new database with name 'bobdata'
       mysql_db:
-        check_implicit_admin: true
-        login_user: bob
-        login_password: 123456
         name: bobdata
         state: present
-      when: ansible_facts['os_family'] == 'Debian' 
+        login_unix_socket: /run/mysqld/mysqld.sock
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Create (or update) MariaDB user bobuser on Debian
+      mysql_user:
+        name: bobuser
+        password: admin123
+        priv: '*.*:ALL'
+        state: present
+        login_user: root
+        login_password: YourNewRootPass 
+        login_unix_socket: /run/mysqld/mysqld.sock
+      when: ansible_facts['os_family'] == 'Debian'
+
