@@ -1,0 +1,73 @@
+---
+- name: Setting Workstation 
+  hosts: webservers
+  become: yes
+  vars_files:
+    - secret.yml
+
+  vars:
+    new_username: "jan"
+    user_password: "{{ jan_user_pass }}"
+    packages:
+      - git
+      - htop
+    new_hostname: "serwer01"
+    timezone: "Europe/Warsaw"
+    locale: "pl_PL.UTF-8"
+
+  tasks:
+    - name: Updage Packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+          #   when: ansible_os_family == "Debian"
+
+    - name: Install Packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+          # when: ansible_os_family == "Debian"
+
+    - name: Add New User Jan
+      user:
+        name: "{{ new_username }}"
+        password: "{{ user_password }}"
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Set Hostname to server01
+      hostname:
+        name: "{{ new_hostname }}"
+
+    - name: Set Timezone
+      timezone:
+        name: "{{ timezone }}"
+
+    - name: Set locale 
+      command: localectl set-locale LANG={{ locale }}
+
+    - name: Install UFW (firewall)
+      apt:
+        name: ufw
+        state: present
+      when: ansible_os_family == "Debian"
+    
+    - name: Start UFW 
+      service:
+        name: ufw
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Allow all access on SSH and HTTP
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop:
+        - '22'
+        - '80'
+
+    - name: Enable UFW firewall
+      ufw:
+        state: enabled

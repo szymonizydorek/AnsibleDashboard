@@ -1,0 +1,15 @@
+---
+- name: Print Facts
+  hosts: all
+  tasks:
+    - name: Print OS Name
+      debug:
+        var: ansible_distribution
+
+    - name: Print RAM memory
+      debug:
+        var: ansible_memory_mb.real.free
+
+    - name: Print Ansible Distribution
+      debug:
+        var: ansible_distribution

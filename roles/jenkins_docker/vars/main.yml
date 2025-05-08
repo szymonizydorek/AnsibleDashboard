@@ -1,0 +1,6 @@
+---
+jenkins_container_name: "jenkins"
+jenkins_port: "8080"
+jenkins_agent_port: "50000"
+jenkins_volume: "jenkins_home"
+jenkins_image: "jenkins/jenkins:lts"

@@ -1,0 +1,6 @@
+---
+- name: Deploy Jenkins with Docker
+  hosts: web01
+  become: yes
+  roles:
+    - docker_role

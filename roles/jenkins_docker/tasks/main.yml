@@ -1,0 +1,35 @@
+---
+- name: install docker.io
+  apt:
+    name: docker.io
+    state: present
+
+- name: Pull Jenkins Docker image
+  docker_image:
+    name: "{{ jenkins_image }}"
+    source: pull
+
+- name: Check if Jenkins Image was Pulled 
+  shell: "docker images"
+  register: docker_image
+  ignore_errors: yes
+
+- name: Output Image Status
+  debug:
+    msg: "Docker image status: {{ docker_image.stdout }}"
+
+
+- name: Copy Jenkins systemd unit from template
+  template:
+    src: jenkins.service.j2
+    dest: /etc/systemd/system/jenkins.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Jenkins
+
+- name: Enable and start Jenkins
+  systemd:
+    name: jenkins
+    enabled: yes
+    state: started

@@ -1,0 +1,53 @@
+---
+- name: Install Docker 
+  apt:
+    name: docker.io
+    state: present
+
+- name: Start Docker Service
+  service:
+    name: docker
+    state: started
+    
+- name: Ensure /var/lib/grafana directory exists
+  file:
+    path: /var/lib/grafana
+    state: directory
+    mode: '0755'
+
+- name: Pull Grafana Docker Image
+  docker_image:
+    name: "{{ image_name }}" 
+    source: pull
+
+- name: Run Docker Container
+  docker_container:
+    name: "{{ container_name }}"
+    image: "{{ image_name }}"
+    state: started
+    ports: "3000:3000"
+    restart_policy: always
+    volumes:
+      - volume grafana-storage:/var/lib/grafana
+
+- name: Open port 3000 
+  ufw:
+    rule: allow
+    port: 3000
+    proto: tcp
+
+- name: Check if Grafana is accessible via HTTP
+  command: curl -s -o /dev/null -w "%{http_code}" http://18.233.159.231:3000/api/health 
+  register: grafana_http_status
+
+- name: Verify Grafana HTTP response code is 200
+  debug:
+    msg: "The system is online with code: {{ grafana_http_status.stdout }}."
+
+- name: Docker Container Logs
+  shell: "docker logs grafana | tail"
+  register: container_logs
+
+- name: Debug Container Logs
+  debug:
+    msg: "{{ container_logs.stdout }}"
