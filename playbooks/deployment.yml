@@ -1,6 +1,6 @@
 ---
-- name: Deploy Grafana with Docker
+- name: Install and Manage K8s 
   hosts: webservers
   become: yes
   roles:
-    - docker_role
+    - kubernetes
