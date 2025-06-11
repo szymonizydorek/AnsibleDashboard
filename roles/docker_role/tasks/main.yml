@@ -28,7 +28,7 @@
     ports: "3000:3000"
     restart_policy: always
     volumes:
-      - volume grafana-storage:/var/lib/grafana
+      - grafana-storage:/var/lib/grafana
 
 - name: Open port 3000 
   ufw:
@@ -36,8 +36,13 @@
     port: 3000
     proto: tcp
 
+- name: Getting Public IP
+  shell: curl -s ifconfig.me
+  register: public_ip_result
+  changed_when: false
+
 - name: Check if Grafana is accessible via HTTP
-  command: curl -s -o /dev/null -w "%{http_code}" http://18.233.159.231:3000/api/health 
+  command: curl -s -o /dev/null -w "%{http_code}" http://{{ public_ip_result.stdout }}:3000/api/health 
   register: grafana_http_status
 
 - name: Verify Grafana HTTP response code is 200
