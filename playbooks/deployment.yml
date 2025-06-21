@@ -1,6 +1,0 @@
----
-- name: Install and Manage K8s 
-  hosts: webservers
-  become: yes
-  roles:
-    - kubernetes

@@ -2,7 +2,8 @@
 - name: Install Docker 
   apt:
     name: docker.io
-    state: present
+    state: absent
+  when: ansible_os_family =='Debian'
 
 - name: Start Docker Service
   service:
