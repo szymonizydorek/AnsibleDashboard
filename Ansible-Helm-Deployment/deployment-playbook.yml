@@ -1,0 +1,7 @@
+---
+- name: Manage Helm Playbook
+  hosts: web01
+  become: yes
+  roles:
+    - helm_install
+    - jenkins_install
