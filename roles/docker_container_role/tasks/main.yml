@@ -1,0 +1,61 @@
+---
+- name: Install Docker on Targets
+  apt:
+    name: docker.io
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Start Docker Service
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Ensure /var/lib/grafana/ exists on host
+  file:
+    path: /var/lib/grafana
+    state: directory
+    mode: '0755'
+
+- name: Pull Grafana Docker Image
+  docker_image:
+    name: "{{ image_name }}"
+    source: pull
+
+- name: Run Docker Container
+  docker_container:
+    name: "{{ container_name }}"
+    image: "{{ image_name }}"
+    state: started
+    ports:
+      - "3000:3000"
+    restart_policy: always
+    volumes:
+      - /var/lib/grafana:/var/lib/grafana
+
+- name: Open Port 3000
+  ufw:
+    rule: allow
+    port: 3000
+    proto: tcp
+
+- name: Getting Public IP
+  shell: curl -s ifconfig.me
+  register: public_ip_result
+  changed_when: false
+
+- name: Check If Grafana is accessible via HTTP
+  command: curl -s -o /dev/null -w "%{http_code}" http://{{ public_ip_result.stdout }}:3000/api/health
+  register: grafana_http_status
+
+- name: Verify Grafana HTTP Response Code
+  debug:
+    msg: "The system is online with code: {{ grafana_http_status.stdout }}"
+
+- name: Docker Container Logs
+  shell: "docker logs grafana | tail"
+  register: container_logs
+
+- name: Debug Container Logs
+  debug:
+    msg: "{{ container_logs.stdout }}"

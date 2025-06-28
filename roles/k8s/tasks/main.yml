@@ -1,0 +1,53 @@
+---
+- name: Get Cluster Info
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Namespace
+    kubeconfig: /etc/kubernetes/admin.conf
+  register: namespaces
+
+- name: Debug Namespaces
+  debug:
+    msg: "Found {{ namespaces.resources | length }}"
+   
+- name: Get Nodes Info
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Node
+    kubeconfig: /etc/kubernetes/admin.conf
+  register: nodes
+
+- name: Debug Nodes
+  debug:
+    msg: "Found {{ nodes.resources | length }} nodes"
+
+- name: Create Namespace 'testig'
+  kubernetes.core.k8s:
+    name: testing
+    api_version: v1
+    kind: Namespace
+    state: present
+    kubeconfig: /etc/kubernetes/admin.conf
+
+- name: Create Service Object
+  kubernetes.core.k8s:
+    state: present
+    kubeconfig: /etc/kubernetes/admin.conf
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: web
+        namespace: testing
+        labels:
+          app: galaxy
+          service: web
+      spec:
+        selector:
+          app: galaxy
+        ports:
+        - protocol: TCP
+          targetPort: 8000
+          name: port-8000-tcp
+          port: 8000
+-

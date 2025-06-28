@@ -1,0 +1,59 @@
+---
+- name: Manage K8s Playbook 
+  hosts: all
+  become: yes
+  tasks:
+  - name: Download helm.tar.gz
+    get_url:
+      url: https://get.helm.sh/helm-v3.14.0-linux-amd64.tar.gz
+      dest: /tmp/helm.tar.gz
+
+  - name: Extract helm.tgz into /tmp/
+    unarchive:
+      src: /tmp/helm.tar.gz
+      dest: /tmp/
+      remote_src: yes
+
+  - name: Move Helm binary
+    copy:
+      src: /tmp/linux-amd64/helm
+      dest: /usr/local/bin/helm
+      mode: '0755'
+      remote_src: yes
+
+  - name: Ensure Helm is working
+    command: helm version
+    register: helm_output
+    changed_when: false
+
+  - name: Print Helm version
+    debug:
+      var: helm_output.stdout
+
+  - name: Add Jenkins Helm Repo
+    kubernetes.core.helm_repository:
+      name: medium_jenkins 
+      repo_url: https://charts.jenkins.io
+
+  - name: Update all Helm repositories
+    command: helm repo update
+
+  - name: Verify Jenkins Repo
+    command: helm repo list
+    register: helm_repo
+
+  - name: Debug Jenkins Repo
+    debug:
+      msg: "{{ helm_repo.stdout_lines }}"
+
+  - name: Deploy latest version of Jenkins chart inside medium_test namespace 
+    kubernetes.core.helm:
+      name: medium_jenkins
+      chart_ref: jenkins/jenkins
+      release_namespace: medium_test
+      create_namespace: true
+      values:
+        persistence:
+          storageClass: local-path
+    environment:
+      KUBECONFIG: /home/ubuntu/.kube/config

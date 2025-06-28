@@ -1,0 +1,38 @@
+---
+- name: Manage K8s Playbook 
+  hosts: all
+  become: yes
+  tasks:
+  - name: Get Cluster Info
+    kubernetes.core.k8s_info:
+      api_version: v1
+      kind: Namespace
+      kubeconfig: /etc/kubernetes/admin.conf
+    register: namespaces
+
+  - name: Debug Namespaces
+    debug:
+      msg: "Found {{ namespaces.resources | length }}"
+
+  - name: Get Nodes Info
+    kubernetes.core.k8s_info:
+      api_version: v1
+      kind: Node
+      kubeconfig: /etc/kubernetes/admin.conf
+    register: nodes
+
+  - name: Debug Nodes
+    debug:
+      msg: "Found {{ nodes.resources | length }} nodes"
+
+  - name: Search for all running pods
+    kubernetes.core.k8s_info:
+      kind: Pod
+      kubeconfig: /etc/kubernetes/admin.conf
+      field_selectors:
+        - status.phase=Running
+    register: running_pods
+  
+  - name: Debug Pods
+    debug:
+      msg: "Found {{ running_pods.resources | map(attribute='metadata.name') | list }} pods"
