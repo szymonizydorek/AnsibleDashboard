@@ -1,0 +1,10 @@
+---
+- name: Install Kubernetes on Target Node
+  hosts: all
+  gather_facts: yes
+  become: yes
+
+  roles:
+    - docker_install
+    - kubernetes_install
+    - kubernetes_deploy

@@ -1,0 +1,95 @@
+---
+- name: Disable Swapp
+  shell: |
+    swapoff -a
+    sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab #sed -i '/swap/d' /etc/fstab
+
+- name: Insert containerd modules
+  blockinfile:
+    path: /etc/modules-load.d/containerd.conf
+    create: yes
+    block: |
+      overlay
+      br_netfilter
+
+- name: Add the Kernel modules
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - overlay
+    - br_netfilter
+
+- name: Configure Kubernetes Networking
+  blockinfile:
+    path: /etc/sysctl.d/kubernetes.conf
+    create: yes
+    block: |
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.bridge.bridge-nf-call-iptables = 1
+      net.ipv4.ip_forward = 1
+
+- name: Reload Configuration
+  shell: |
+    sudo sysctl --system
+
+- name: Read the hostname
+  setup:
+    filter: ansible_hostname
+
+- name: Configure kublet
+  blockinfile:
+    path: /etc/default/kublet
+    create: yes
+    block: |
+      KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"
+
+- name: Reload systemd and restart kubelet
+  systemd:
+    name: kubelet
+    state: restarted
+    daemon_reload: yes
+
+- name: Configure Docker
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Docker
+
+- name: Initalize Kubernetes Control Plane
+  become: yes
+  command: >
+    kubeadm init \
+    --control-plane-endpoint={{ ansible_hostname }} \
+    --upload-certs \
+    --pod-network-cidr=10.200.0.0/16 \
+
+- name: Ensure .kube directory exists with correct permissions
+  file:
+    path: /home/ubuntu/.kube
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0700'
+
+- name: Copy admin.conf to user's kube config
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/ubuntu/.kube/config
+    owner: ubuntu
+    group: ubuntu
+    mode: '0600'
+    remote_src: yes
+  become: yes
+
+
+- name: verify the installation
+  command: kubectl --kubeconfig=/home/ubuntu/.kube/config -n kube-system get pods
+  register: kube_status
+
+- name: Debug the status
+  debug:
+    msg: "{{ kube_status.stdout }}"
